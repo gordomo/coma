@@ -1,0 +1,43 @@
+version: '2'
+
+services:
+  mariadb:
+    container_name: mariadb
+    image: docker.io/bitnami/mariadb:10.2
+    environment:
+      # ALLOW_EMPTY_PASSWORD is recommended only for development.
+      - ALLOW_EMPTY_PASSWORD=no
+      - MARIADB_USER=upse92
+      - MARIADB_DATABASE=coma_db
+      - MARIADB_PASSWORD=klaoaiy29&1
+      - MARIADB_ROOT_PASSWORD=locu182
+
+  myapp:
+    container_name: myapp
+    tty: true
+    image: docker.io/bitnami/laravel:8
+    environment:
+      - DB_HOST=mariadb
+      - DB_USERNAME=upse92
+      - DB_DATABASE=coma_db
+      - DB_PASSWORD=klaoaiy29&1
+      - DB_ROOT_PASSWORD=locu182
+    depends_on:
+      - mariadb
+    ports:
+      - 3000:3000
+    volumes:
+      - ./:/app
+    # privileged: true # Privileged mode could be required to run this container under Windows
+  phpmyadmin:
+      image: phpmyadmin/phpmyadmin
+      links:
+          - mariadb:mariadb
+      ports:
+          - 8000:80
+      environment:
+          - PMA_HOST=mariadb
+          - PMA_USERNAME=upse92
+          - PMA_DATABASE=coma_db
+          - PMA_PASSWORD=klaoaiy29&1
+          - PMA_ROOT_PASSWORD=locu182
